@@ -1,0 +1,36 @@
+================================================================================
+LEGAL DOCUMENT ANALYSIS REPORT
+================================================================================
+Document: D:\ml\dataset\dataset\IN-Abs\test-data\judgement\266.txt
+Predicted Type: Property Agreement (Confidence: 40.0%)
+
+SUMMARY:
+- Total risk factors identified: 6
+- High-risk factors: 0
+- Sections with risks: 1
+
+TOP RISK FACTORS:
+
+1. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: void
+   Text: The principal question canvassed in this case is whether certain sections of the Taxation on Income (Investigation Commission) Act, 1947, i.e., Act XXX of 1947, have become void from the date of the commencement of the Constitution of India by reason of article 14 of the ' Constitution.
+
+2. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: void
+   Text: On the 12th April, 1954, the present petition under article 32 of the Constitution was filed for the issue of appropriate writs restraining the Commission from taking any action against the petitioner under the provisions of Act XXX of 1947, on the ground that the provisions of sections 5(1), 5(4),6,7 and 8 of Act XXX of 1947, had become void, being discriminatory in character after the coming into force of the Constitution of India.
+
+3. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: penalty
+   Text: (4)The authorized official shall subject to the direction of the Commission have the same powers as the Commission under sub sections (1) and (2), and 453 any person having charge or custody of accounts or documents required to be examined shall not withstanding anything in any law to the contrary be bound to produce them (5)If any person whose case or the points in whose case is or are being investigated by the Commission refuses or fails to attend in person in compliance with a notice in that behalf duly served upon him or to give any evidence or to answer questions or to produce documents or to prepare and furnish statements when called upon to do so, the Commission may, if satisfied that the refusal or failure was wailful, close the investigation of the case and proceed to draw up its report on the case or on the points to the best of its judgment and may in its discretion also direct that such sum as it may specify in the direction shall be recovered from the person by way of penalty for the refusal or failure, without prejudice to any penalty under the Indian Income tax Act, 1922 (6). . . . . . . . .
+
+4. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: void
+   Text: In the alternative, he I contended that assuming that sub section (1) was valid even then sub section (4) had to be declared void because it gave arbitrary power to the Commission to pick and choose and secondly because the clause was highly discriminatory in character inasmuch as an evasion, whether substantial or insubstantial, came within its ambit as well as within the ambit of section 34 of the Indian Income tax Act.
+
+5. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: void
+   Text: ed that persons coming under sub section (4) of section 5 also belonged to the same class and therefore on the same grounds that section also could not be declared void.
+
+6. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: void
+   Text: For the reasons given above we are of the opinion that sub section (4) of section 5 and the procedure prescribed by the impugned Act in so far as affects the persons proceeded against under that sub section being a piece of discriminatory legislation offends against the provisions of article 14 of the Constitution and is thus void and unenforceable.

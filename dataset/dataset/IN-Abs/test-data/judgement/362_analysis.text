@@ -1,0 +1,40 @@
+================================================================================
+LEGAL DOCUMENT ANALYSIS REPORT
+================================================================================
+Document: D:\ml\dataset\dataset\IN-Abs\test-data\judgement\362.txt
+Predicted Type: Property Agreement (Confidence: 40.0%)
+
+SUMMARY:
+- Total risk factors identified: 7
+- High-risk factors: 0
+- Sections with risks: 1
+
+TOP RISK FACTORS:
+
+1. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: void
+   Text: The principal contentions urged by the learned Advocate appearing for the petitioner are as follows, namely, (a) that section 46(2) of the Indian Income tax Act under which the Income tax Officer issued the recovery certificate to the Additional Collector of Bombay is void under article 13(1) of the Constitution in that the same offends article 22(1) and (2), article 21 and article 14 of the Constitution; (b) that section 13 of the Bombay City Land Revenue Act, 1876 under which the warrant of arrest was issued by the Additional Collector is void under article 13 (1) of the Constitution as the same is repugnant to article 14 of the Constitution.
+
+2. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: void
+   Text: It is only if those sections are void that the question of violation of the fundamental right under article 21 can arise at all.
+
+3. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: void
+   Text: The contention is that section 46(2) which sanctions such discrimination is clearly violative of the equal protection clause of the Constitution and has, therefore, become void under article 13 (1).
+
+4. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: penalty
+   Text: of a defaulter who fails to pay income tax as a punishment or penalty for an offence.
+
+5. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: jurisdiction
+   Text: Indeed, in that very case it was recognised that it was not impossible that a distinct territorial establishment and jurisdiction might be intended as or might have the effect of discrimination against a particular race or class where such race or class should happen to be the principal occupants of the disfavoured area.
+
+6. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: void
+   Text: The argument is that on the advent of the Constitution section 13 of the Bombay City Land Revenue Act, 1876 became void under article 13(1) in that it denied to the Bombay defaulter equality before the law in comparison with the defaulter outside the City of Bombay, for he could be detained for a longer period of time.
+
+7. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: void
+   Text: Assuming, then, but not deciding, that section 13 of the Bombay City Land Revenue Act, 1876 became inconsistent with the fundamental right guaranteed by article 14 and, therefore, became void to the extent of such inconsistency, it was not, as recently explained by this Court in Bhikaji Narayan Dhakras vs The State of Madhya Pradesh, Nagpur and Another(1), obliterated from the statute book for all times or for all purposes or for all people.

@@ -1,0 +1,16 @@
+================================================================================
+LEGAL DOCUMENT ANALYSIS REPORT
+================================================================================
+Document: D:\ml\dataset\dataset\IN-Abs\test-data\judgement\314.txt
+Predicted Type: Criminal Case (Confidence: 60.0%)
+
+SUMMARY:
+- Total risk factors identified: 1
+- High-risk factors: 0
+- Sections with risks: 1
+
+TOP RISK FACTORS:
+
+1. [Risk Score: 0.50] Preamble
+   Reason: Contains risk keyword: breach
+   Text: Reference may also be made to the following observations of Sulaiman, J. in the same case: "The question whether a criminal breach of trust can be committed while purporting to act in execution of his duty is not capable of being answered hypothetically in the abstract, without any reference to the actual facts of the case.

@@ -1,0 +1,261 @@
+"""
+Machine learning models for legal document classification and analysis.
+"""
+
+import os
+import logging
+import joblib
+import numpy as np
+from pathlib import Path
+from typing import Dict, List, Any, Optional, Union, Tuple
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import classification_report
+from sklearn.model_selection import train_test_split
+import pandas as pd
+
+logger = logging.getLogger(__name__)
+
+class DocumentClassifier:
+    """
+    Class for training and using document classification models.
+    Supports multiple classifier types and feature extraction methods.
+    """
+    
+    def __init__(self, model_type: str = 'random_forest', model_path: str = None):
+        """Initialize the document classifier.
+        
+        Args:
+            model_type: Type of classifier to use ('random_forest', 'svm', 'naive_bayes')
+            model_path: Path to a pre-trained model to load (optional)
+        """
+        self.model_type = model_type
+        self.model = None
+        self.vectorizer = TfidfVectorizer(
+            max_features=5000,
+            ngram_range=(1, 2),
+            stop_words='english'
+        )
+        
+        if model_path:
+            self.load_model(model_path)
+    
+    def train(self, X: List[str], y: List[str], test_size: float = 0.2, 
+             random_state: int = 42) -> Dict[str, Any]:
+        """
+        Train the document classifier.
+        
+        Args:
+            X: List of document texts
+            y: List of corresponding labels
+            test_size: Proportion of data to use for testing
+            random_state: Random seed for reproducibility
+            
+        Returns:
+            Dictionary containing training results
+        """
+        # Split the data
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=test_size, random_state=random_state, stratify=y
+        )
+        
+        # Initialize the model
+        if self.model_type == 'random_forest':
+            classifier = RandomForestClassifier(n_estimators=100, random_state=random_state)
+        elif self.model_type == 'svm':
+            classifier = SVC(probability=True, random_state=random_state)
+        elif self.model_type == 'naive_bayes':
+            classifier = MultinomialNB()
+        else:
+            raise ValueError(f"Unsupported model type: {self.model_type}")
+        
+        # Create pipeline
+        self.model = Pipeline([
+            ('tfidf', self.vectorizer),
+            ('clf', classifier)
+        ])
+        
+        # Train the model
+        self.model.fit(X_train, y_train)
+        
+        # Evaluate on test set
+        y_pred = self.model.predict(X_test)
+        report = classification_report(y_test, y_pred, output_dict=True)
+        
+        return {
+            'accuracy': report['accuracy'],
+            'precision': report['weighted avg']['precision'],
+            'recall': report['weighted avg']['recall'],
+            'f1': report['weighted avg']['f1-score'],
+            'class_report': report
+        }
+    
+    def predict(self, text: Union[str, List[str]]) -> Union[str, List[str]]:
+        """
+        Predict the class of one or more documents.
+        
+        Args:
+            text: A single document text or list of document texts
+            
+        Returns:
+            Predicted class(es)
+        """
+        if not self.model:
+            raise ValueError("Model has not been trained or loaded")
+        return self.model.predict([text] if isinstance(text, str) else text)
+    
+    def predict_proba(self, text: Union[str, List[str]]) -> np.ndarray:
+        """
+        Predict class probabilities for one or more documents.
+        
+        Args:
+            text: A single document text or list of document texts
+            
+        Returns:
+            Array of class probabilities
+        """
+        if not self.model:
+            raise ValueError("Model has not been trained or loaded")
+        return self.model.predict_proba([text] if isinstance(text, str) else text)
+    
+    def save_model(self, output_dir: str) -> str:
+        """
+        Save the trained model to disk.
+        
+        Args:
+            output_dir: Directory to save the model to
+            
+        Returns:
+            Path to the saved model file
+        """
+        if not self.model:
+            raise ValueError("No model to save")
+            
+        os.makedirs(output_dir, exist_ok=True)
+        model_path = os.path.join(output_dir, f"{self.model_type}_classifier.joblib")
+        joblib.dump(self.model, model_path)
+        return model_path
+    
+    def load_model(self, model_path: str):
+        """
+        Load a pre-trained model from disk.
+        
+        Args:
+            model_path: Path to the saved model file
+        """
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"Model file not found: {model_path}")
+        
+        self.model = joblib.load(model_path)
+        self.vectorizer = self.model.named_steps['tfidf']
+
+
+def train_document_classifier(data_path: str, output_dir: str, 
+                            model_type: str = 'random_forest',
+                            test_size: float = 0.2,
+                            random_state: int = 42) -> Dict[str, Any]:
+    """
+    Train a document classifier from a data file.
+    
+    Args:
+        data_path: Path to the training data file (CSV or JSON)
+        output_dir: Directory to save the trained model
+        model_type: Type of classifier to train
+        test_size: Proportion of data to use for testing
+        random_state: Random seed for reproducibility
+        
+    Returns:
+        Dictionary containing training results and model information
+    """
+    # Load data
+    data_path = Path(data_path)
+    if not data_path.exists():
+        raise FileNotFoundError(f"Data file not found: {data_path}")
+    
+    if data_path.suffix.lower() == '.csv':
+        df = pd.read_csv(data_path)
+    elif data_path.suffix.lower() == '.json':
+        df = pd.read_json(data_path)
+    else:
+        raise ValueError("Unsupported file format. Please provide a CSV or JSON file.")
+    
+    # Check required columns
+    if 'text' not in df.columns or 'label' not in df.columns:
+        raise ValueError("Data must contain 'text' and 'label' columns")
+    
+    # Initialize and train classifier
+    classifier = DocumentClassifier(model_type=model_type)
+    results = classifier.train(
+        X=df['text'].tolist(),
+        y=df['label'].tolist(),
+        test_size=test_size,
+        random_state=random_state
+    )
+    
+    # Save the trained model
+    model_path = classifier.save_model(output_dir)
+    results['model_path'] = model_path
+    
+    return results
+
+
+if __name__ == "__main__":
+    # Example usage
+    import tempfile
+    
+    # Create sample data
+    data = {
+        'text': [
+            "This is a legal contract about intellectual property rights.",
+            "The parties agree to the terms and conditions of this agreement.",
+            "This document outlines the liability limitations for the service.",
+            "The software is provided as-is without any warranties.",
+            "The agreement may be terminated by either party with 30 days notice.",
+            "All intellectual property rights are reserved by the company.",
+            "The service provider disclaims all liability for any damages.",
+            "This is a sample legal document for demonstration purposes."
+        ],
+        'label': [
+            'ip', 'general', 'liability', 'warranties',
+            'termination', 'ip', 'liability', 'general'
+        ]
+    }
+    
+    # Convert to DataFrame
+    df = pd.DataFrame(data)
+    
+    # Create a temporary directory for the model
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Save sample data to a temporary file
+        temp_csv = os.path.join(temp_dir, 'sample_data.csv')
+        df.to_csv(temp_csv, index=False)
+        
+        # Train a classifier
+        print("Training sample classifier...")
+        results = train_document_classifier(
+            data_path=temp_csv,
+            output_dir=temp_dir,
+            model_type='random_forest'
+        )
+        
+        print(f"\nTraining results:")
+        print(f"Accuracy: {results['accuracy']:.4f}")
+        print(f"Model saved to: {results['model_path']}")
+        
+        # Test the classifier
+        test_texts = [
+            "This agreement may be terminated at any time.",
+            "All rights to the software are reserved.",
+            "The company is not liable for any damages."
+        ]
+        
+        classifier = DocumentClassifier(model_path=results['model_path'])
+        predictions = classifier.predict(test_texts)
+        
+        print("\nTest predictions:")
+        for text, pred in zip(test_texts, predictions):
+            print(f"\nText: {text}")
+            print(f"Predicted category: {pred}")
