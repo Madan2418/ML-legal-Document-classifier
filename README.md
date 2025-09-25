@@ -1,141 +1,148 @@
-# Legal Document Analyzer
+# ML Legal Document Classifier
 
-An automated tool for analyzing legal documents, extracting key information, and identifying potential risks.
+An automated tool for analyzing legal documents, extracting key information, identifying potential risks, and classifying documents with machine learning.
 
-## Features
+---
 
-- **Document Processing**: Handles various document formats (TXT, PDF, DOCX)
-- **Text Summarization**: Generates concise summaries of legal documents
-- **Risk Detection**: Identifies and highlights potential risk factors in legal text
-- **Document Classification**: Categorizes documents based on their content
-- **Visualization**: Creates visual representations of document analysis
+## 🚀 Features Overview
 
-## Installation
+| Feature                | Description                                                                 | Visual Output                |
+|------------------------|-----------------------------------------------------------------------------|------------------------------|
+| **Document Processing**| Handles TXT, PDF, DOCX; cleans and extracts text.                           | 📄                           |
+| **Text Summarization** | Generates concise summaries of lengthy legal docs.                          | 🗒️ Summary Block             |
+| **Risk Detection**     | Identifies and highlights potential risk factors in legal language.          | ⚠️ Risk Chart                |
+| **Document Classification** | Categorizes documents by content (Contract, IP, Liability, etc.).      | 🏷️ Category Pie Chart        |
+| **Visualization**      | Creates visual representations (word cloud, stats, risk bar charts, etc.).  | 🌥️ Word Cloud, 📊 Bar Graphs |
 
-1. Clone this repository:
-   ```bash
-   git clone <repository-url>
-   cd legal-document-analyzer
-   ```
+---
 
-2. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 🗂 Project Structure
 
-3. Download the required NLTK data:
-   ```python
-   python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
-   ```
-
-4. Install the spaCy English model:
-   ```bash
-   python -m spacy download en_core_web_sm
-   ```
-
-## Usage
-
-### Basic Usage
-
-To analyze a single legal document:
-
-```bash
-python legal_doc_analyzer_ml.py path/to/your/document.pdf
-```
-
-### Command Line Arguments
-
-- `file_path`: Path to the legal document file (required)
-- `--output`, `-o`: Output directory for results (default: 'results/')
-- `--verbose`, `-v`: Enable verbose output
-
-Example:
-
-```bash
-python legal_doc_analyzer_ml.py data/contracts/agreement.pdf --output analysis_results --verbose
-```
-
-### Output
-
-The tool will generate the following outputs:
-
-1. **Console Output**:
-   - Document summary
-   - Detected risk factors
-   - Document category
-   - Path to generated visualizations
-
-2. **Files**:
-   - Summary text file
-   - Risk analysis report
-   - Visualizations (word cloud, risk factors chart, etc.)
-   - Full analysis report (JSON)
-
-## Project Structure
-
-```
+```text
 legal-document-analyzer/
-├── legal_doc_analyzer_ml.py  # Main script
-├── preprocess.py            # Document loading and preprocessing
-├── summarizer.py            # Text summarization
-├── risk_detector.py         # Risk factor detection
-├── models.py                # Document classification
-├── visualize.py             # Data visualization
-├── requirements.txt         # Python dependencies
-└── README.md                # This file
+├── legal_doc_analyzer_ml.py   # Main workflow script
+├── preprocess.py              # Document loading & preprocessing (PDF, DOCX, TXT)
+├── summarizer.py              # Text summarization logic
+├── risk_detector.py           # Detects legal risks in docs
+├── models.py                  # ML models for document classification
+├── visualize.py               # All visualizations (word clouds, charts, etc.)
+├── train_classifier.py        # Utility script to train new classifiers
+├── test_analyzer.py           # Basic tests for preprocessing, summarization, risk detection
+├── requirements.txt           # Python dependencies
+├── README.md                  # (This file)
+└── dataset/                   # Example & training legal documents
 ```
 
-## Customization
+---
 
-### Adding Custom Risk Terms
+## 🖥️ Workflow Visualization
 
-You can add custom risk terms by creating a JSON file with the following structure:
+```mermaid
+flowchart TD
+    A[User provides document] --> B[Preprocess (clean/load)]
+    B --> C[Summarize text]
+    C --> D[Detect risks]
+    D --> E[Classify document type]
+    E --> F[Visualize results]
+    F --> G[Output: Console + Files]
+```
 
+**Typical Outputs:**
+- **Console:** Summary, risk factors, classification, visualization paths
+- **Files:** Summary `.txt`, risk report, visualizations (word cloud, risk chart, category distribution), full analysis `.json`
+
+---
+
+## 🛠️ Installation
+
+```bash
+git clone https://github.com/Madan2418/ML-legal-Document-classifier.git
+cd ML-legal-Document-classifier
+pip install -r requirements.txt
+python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
+python -m spacy download en_core_web_sm
+```
+
+---
+
+## ⚡ Usage
+
+To analyze a legal document:
+```bash
+python legal_doc_analyzer_ml.py path/to/document.pdf --output results --verbose
+```
+
+**Command Line Options:**
+- `file_path` – Path to the document [required]
+- `--output, -o` – Output directory for results (default: `results/`)
+- `--verbose, -v` – Prints detailed logs
+
+---
+
+## 🔍 Customization
+
+### Add Custom Risk Terms
+Create a JSON file:
 ```json
 {
-    "custom_category_1": [
-        "term 1",
-        "term 2",
-        "term 3"
-    ],
-    "custom_category_2": [
-        "term 4",
-        "term 5"
-    ]
+    "termination": ["terminate", "expiry", "notice period"],
+    "liability": ["indemnify", "damages", "hold harmless"]
 }
 ```
+Pass this file to `RiskDetector`.
 
-Then specify the path to this file when initializing the `RiskDetector` class.
-
-### Training Custom Models
-
-To train a custom document classifier, prepare a CSV or JSON file with 'text' and 'label' columns, then run:
-
+### Train Custom Models
+Prepare a CSV/JSON with 'text' and 'label', then:
 ```python
 from models import train_document_classifier
-
 results = train_document_classifier(
     data_path='path/to/training_data.csv',
     output_dir='models',
-    model_type='random_forest'  # or 'svm', 'logistic_regression'
+    model_type='random_forest'
 )
 ```
 
-## Dependencies
+---
+
+## 📊 Visualization Examples
+
+- **Word Cloud:** Most frequent terms from document.
+- **Risk Factors Chart:** Severity/category bar chart for detected risks.
+- **Category Distribution:** Pie chart showing classification confidence.
+- **Text Statistics:** Word count, sentence count, average word length.
+
+---
+
+## 🧑‍💻 For Developers
+
+- **Test Core Modules:**  
+  Run `test_analyzer.py` for basic component checks.
+- **Retrain Model:**  
+  Use `train_classifier.py` for new training data.
+
+---
+
+## 📚 Dependencies
 
 - Python 3.7+
-- See `requirements.txt` for a complete list of Python dependencies
+- NLTK, spaCy, scikit-learn, matplotlib, seaborn, wordcloud, PyPDF2, python-magic, etc.
 
-## License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 📄 License
 
-## Contributing
+MIT License
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+---
 
-## Acknowledgments
+## ❤️ Acknowledgments
 
-- Built with ❤️ using Python
-- Uses spaCy for NLP processing
-- Visualizations powered by Matplotlib and Seaborn
+- Built with Python
+- NLP powered by spaCy & NLTK
+- Visualizations with Matplotlib & Seaborn
+
+---
+
+## 👋 Contributing
+
+PRs welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
